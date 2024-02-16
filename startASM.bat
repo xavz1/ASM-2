@@ -12,14 +12,49 @@ type version.txt
 echo Logged in as %whoami%
 echo -----------------------
 echo 1. AD tools
+echo 2. Networking tools
 echo.
+echo X. Exit
 echo -----------------------
 echo.
 
     set /p asm.mn-menumain-input= Select an option from the list above:
         if %asm.mn-menumain-input% == 1 goto asm.adtools-menumain
+        if %asm.mn-menumain-input% == 2 goto asm.nettools-menumain
+        if %asm.mn-menumain-input% == x exit
+        if %asm.mn-menumain-input% == X exit
 
-    :asm.adtools-menumain
+:asm.nettools-menumain
+    cls
+        echo %time%
+        type version.txt
+        echo Logged in as %whoami%
+        echo -----------------------
+        echo 1. Ping
+        echo.
+        echo X. Return to menu
+        echo -----------------------
+        
+            set /p asm.nettools-inp=
+                if %asm.nettools-inp% == 1 goto asm.nettools-ping
+                if %asm.nettools-inp% == x goto asm.mn-menumain
+                if %asm.nettools-inp% == X goto asm.mn-menumain
+                
+                :asm.nettools-ping
+                cls
+
+                echo %time%
+                type version.txt
+                echo Logged in as %whoami%
+                echo -----------------------
+                    set /p asm.nettools-ping-inp= Enter a host name or IP address to ping
+                    ping %asm.nettools-ping-inp%
+
+                    pause
+                goto asm.nettools-menumain
+
+:asm.adtools-menumain
+
     cls
 
     echo %time%
@@ -34,7 +69,7 @@ echo.
         if %asm.adtools-menumain-inp% == 1 goto asm.adtools-sgaddauto
 
         :asm.adtools-sgaddauto
-cls
+    cls
 
             :asm.adtools-sgaddauto-a
             
@@ -57,15 +92,15 @@ cls
                if %input% == X exit
                
                :sa-add
-cls
+    cls
                    set /p sa-add-sg= Please enter the name of the security group (example: sg_headoffice)
                    set /p sa-add-un= Please enter the user name to be added to this SG:
             powershell Add-ADGroupMember -Identity %sa-add-sg% -Members %sa-add-un%
-cls
+    cls
 
         echo User %sa-add-un% added to security group %sa-add-sg%. Please press any key to return to the menu.
         pause
-goto asm.adtools-sgaddauto-a
+    goto asm.adtools-sgaddauto-a
 
  
 
@@ -77,7 +112,7 @@ goto asm.adtools-sgaddauto-a
 
                 :sgaddauto-ca-add
                     set /p ca-add-sg= Please enter the name of the security group (example: sg_headoffice):
-cls
+    cls
 
                 goto ca-add-s1
 
@@ -85,19 +120,19 @@ cls
                         set /p ca-add-un= Please enter the user name to be added to this SG:
 
                             powershell Add-ADGroupMember -Identity %ca-add-sg% -Members %ca-add-un%
-cls
+    cls
                         echo.
                         echo User %ca-add-un% added to SG %ca-add-sg%. Please continue.
 
                 goto ca-add-s1
 
-:csv-add
-cls
+    :csv-add
+    cls
 
     echo No.
-pause
+    pause
 
-goto asm.adtools-sgaddauto-a
+    goto asm.adtools-sgaddauto-a
 
 
 
