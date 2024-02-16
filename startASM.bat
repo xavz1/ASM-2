@@ -13,6 +13,7 @@ echo Logged in as %whoami%
 echo -----------------------
 echo 1. AD tools
 echo 2. Networking tools
+echo 3. View computer info
 echo.
 echo X. Exit
 echo -----------------------
@@ -21,8 +22,23 @@ echo.
     set /p asm.mn-menumain-input= Select an option from the list above:
         if %asm.mn-menumain-input% == 1 goto asm.adtools-menumain
         if %asm.mn-menumain-input% == 2 goto asm.nettools-menumain
+        if %asm.mn-menumain-input% == 3 goto asm.sysinf
         if %asm.mn-menumain-input% == x exit
         if %asm.mn-menumain-input% == X exit
+
+:asm.sysinf
+    cls
+
+    echo %time%
+    type version.txt
+    echo Logged in as %whoami%
+    echo -----------------------
+    systeminfo
+    echo.
+    echo Logged in as: %whoami%
+    echo.
+        pause
+    goto asm.mn-menumain    
 
 :asm.nettools-menumain
     cls
@@ -31,12 +47,14 @@ echo.
         echo Logged in as %whoami%
         echo -----------------------
         echo 1. Ping
+        echo 2. View host IP config
         echo.
         echo X. Return to menu
         echo -----------------------
         
             set /p asm.nettools-inp=
                 if %asm.nettools-inp% == 1 goto asm.nettools-ping
+                if %asm.nettools-inp% == 2 goto asm.nettools-ipconfig
                 if %asm.nettools-inp% == x goto asm.mn-menumain
                 if %asm.nettools-inp% == X goto asm.mn-menumain
                 
@@ -50,6 +68,18 @@ echo.
                     set /p asm.nettools-ping-inp= Enter a host name or IP address to ping
                     ping %asm.nettools-ping-inp%
 
+                    pause
+                goto asm.nettools-menumain
+
+                :asm.nettools-ipconfig
+                cls
+
+                echo %time%
+                type version.txt
+                echo Logged in as %whoami%
+                echo -----------------------
+                    ipconfig
+                echo.
                     pause
                 goto asm.nettools-menumain
 
