@@ -1,31 +1,36 @@
 @echo off
 color 71
-title ASM 2.0.1
+title ASM 2
 goto asm.mn-menumain
 cls
 
 :asm.mn-menumain
-cls
+    cls
 
-echo %time%
-type version.txt
-echo Logged in as %whoami%
-echo -----------------------
-echo 1. AD tools
-echo 2. Networking tools
-echo 3. View computer info
-echo.
-echo X. Exit
-echo -----------------------
-echo.
+    echo %time%
+    type version.txt
+    echo Logged in as %whoami%
+    echo -----------------------
+    echo 1. AD tools
+    echo 2. Networking tools
+    echo 3. View computer info
+    echo.
+    echo X. Exit
+    echo -----------------------
+    echo.
 
-    set /p asm.mn-menumain-input= Select an option from the list above:
-        if %asm.mn-menumain-input% == 1 goto asm.adtools-menumain
-        if %asm.mn-menumain-input% == 2 goto asm.nettools-menumain
-        if %asm.mn-menumain-input% == 3 goto asm.sysinf
-        if %asm.mn-menumain-input% == x exit
-        if %asm.mn-menumain-input% == X exit
+        set /p asm.mn-menumain-input= Select an option from the list above:
 
+    start noinp.vbs
+    goto asm.mn-menumain
+    REM:: Handles no input detection then returns to menu, implemented to other sections
+
+            if %asm.mn-menumain-input% == 1 goto asm.adtools-menumain
+            if %asm.mn-menumain-input% == 2 goto asm.nettools-menumain
+            if %asm.mn-menumain-input% == 3 goto asm.sysinf
+            if %asm.mn-menumain-input% == x exit
+            if %asm.mn-menumain-input% == X exit
+    
 :asm.sysinf
     cls
 
@@ -52,11 +57,15 @@ echo.
         echo X. Return to menu
         echo -----------------------
         
-            set /p asm.nettools-inp=
-                if %asm.nettools-inp% == 1 goto asm.nettools-ping
-                if %asm.nettools-inp% == 2 goto asm.nettools-ipconfig
-                if %asm.nettools-inp% == x goto asm.mn-menumain
-                if %asm.nettools-inp% == X goto asm.mn-menumain
+                set /p asm.nettools-inp=
+
+            start noinp.vbs
+            goto asm.nettools-menumain
+
+                    if %asm.nettools-inp% == 1 goto asm.nettools-ping
+                    if %asm.nettools-inp% == 2 goto asm.nettools-ipconfig
+                    if %asm.nettools-inp% == x goto asm.mn-menumain
+                    if %asm.nettools-inp% == X goto asm.mn-menumain
                 
                 :asm.nettools-ping
                 cls
@@ -66,6 +75,10 @@ echo.
                 echo Logged in as %whoami%
                 echo -----------------------
                     set /p asm.nettools-ping-inp= Enter a host name or IP address to ping
+
+                start noinp.vbs
+                goto asm.nettools-ping
+
                     ping %asm.nettools-ping-inp%
 
                     pause
@@ -92,11 +105,18 @@ echo.
     echo Logged in as %whoami%
     echo -----------------------
     echo 1. Security Group settings
+    echo 2. User account settings
     echo.
     echo -----------------------
 
     set /p asm.adtools-menumain-inp=
+
+    start noinp.vbs
+    goto asm.adtools-menumain
+
+
         if %asm.adtools-menumain-inp% == 1 goto asm.adtools-sgaddauto
+        if %asm.adtools-menumain-inp% == 2 goto asm.adtools-uadas
 
         :asm.adtools-sgaddauto
     cls
@@ -115,6 +135,10 @@ echo.
             echo -----------------------
             
             set /p input= Please select an option:
+
+            start noinp.vbs
+            goto asm.adtools-sgaddauto-a
+
                if %input% == 1 goto sgaddauto-ca-add
                if %input% == 2 goto sa-add
                if %input% == 3 goto csv-add
@@ -147,7 +171,26 @@ echo.
                 goto ca-add-s1
 
                     :ca-add-s1
+                        echo Type 'Exit' to return to the main menu
+                        echo.
                         set /p ca-add-un= Please enter the user name to be added to this SG:
+
+                        start noinp.vbs
+                        goto ca-add-s1
+
+                                    if %ca-add-un% == exit goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == Exit goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == EXit goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == EXIt goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == EXIT goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == eXIT goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == exIT goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == exiT goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == ExiT goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == eXIt goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == eXiT goto asm.adtools-sgaddauto-a
+                                    if %ca-add-un% == ExIt goto asm.adtools-sgaddauto-a
+                                    REM:: The presense of multiple lines of the same command ensures that the function works no matter how its typed once it is spelt correctly
 
                             powershell Add-ADGroupMember -Identity %ca-add-sg% -Members %ca-add-un%
     cls
@@ -159,7 +202,7 @@ echo.
     :csv-add
     cls
 
-    echo No.
+    echo Application not yet available.
     pause
 
     goto asm.adtools-sgaddauto-a

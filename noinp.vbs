@@ -1,0 +1,1 @@
+x=msgbox("No input detected." ,0, "Error")
